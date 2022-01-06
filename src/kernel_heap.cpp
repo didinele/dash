@@ -49,4 +49,12 @@ namespace dash {
 
         return free_node->get_data();
     }
+
+    void KernelHeap::free(void *ptr)
+    {
+        // Ptr should be pointing to be the start of a data block, right
+        // before a node
+        auto node = reinterpret_cast<Node *>(ptr) - 1;
+        node->free = true;
+    }
 } // namespace dash

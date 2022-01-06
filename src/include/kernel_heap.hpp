@@ -5,8 +5,6 @@ namespace dash {
 // 10MB
 #define DASH_KERNEL_BUFFER_SIZE 10 * 1024 * 1024
 
-    // TODO: Remove error-prone data_start and instead use pointer math to
-    // TODO: figure out data start
     struct Node {
         Node(size_t size, Node *next) : next(next), data_size(size), free(true)
         {
@@ -31,6 +29,7 @@ namespace dash {
       public:
         KernelHeap();
         [[nodiscard]] void *allocate(size_t size);
+        void free(void *ptr);
 
       private:
         Node *f_Head;
