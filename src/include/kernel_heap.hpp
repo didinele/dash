@@ -5,14 +5,28 @@ namespace dash {
 // 10MB
 #define DASH_KERNEL_BUFFER_SIZE 10 * 1024 * 1024
 
-    // TODO: Write a little constructor to avoid error-prone data_start
+    // TODO: Remove error-prone data_start and instead use pointer math to
+    // TODO: figure out data start
     struct Node {
+        Node(size_t size, Node *next) : next(next), data_size(size), free(true)
+        {
+        }
+
+        Node(size_t size) : Node(size, nullptr)
+        {
+        }
+
+        uint8_t *get_data()
+        {
+            return reinterpret_cast<uint8_t *>(this) + sizeof(Node);
+        }
+
         Node *next;
-        uint8_t *data_start;
         size_t data_size;
         bool free;
     };
 
+    // TODO: Make this a proper singleton
     class KernelHeap {
       public:
         KernelHeap();
